@@ -613,5 +613,5 @@ class LoginPage extends BasePage {
     }
   }
 }
-
+//Code update
 module.exports = LoginPage;

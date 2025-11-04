@@ -13,11 +13,11 @@ class LoginPage extends BasePage {
     this.selectors = {
       // Login form elements
       usernameInput:
-        'input[name="username"], input[id="username"], input[type="text"]',
+        '#mat-input-0, input[placeholder*="User ID"], input[type="text"]',
       passwordInput:
-        'input[name="password"], input[id="password"], input[type="password"]',
+        '#mat-input-1, input[placeholder*="Password"], input[type="password"]',
       loginButton:
-        'button[type="submit"], input[type="submit"], button:has-text("Login"), button:has-text("Sign In")',
+        'button:has-text("Log in"), button[type="submit"], input[type="submit"]',
 
       // Error and success messages
       errorMessage:

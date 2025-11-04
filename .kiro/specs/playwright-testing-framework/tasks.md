@@ -65,11 +65,14 @@
     - Add methods for error message verification and page navigation
     - _Requirements: 1.1, 1.2, 5.1, 5.2_
 
-  - [ ] 4.2 Implement authentication test specifications
+  - [x] 4.2 Implement authentication test specifications
+
+
     - Create login test cases for SuperAdmin and Admin users
     - Implement invalid credentials and empty field validation tests
     - Add successful login verification and redirect testing
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
+
 
   - [ ] 4.3 Create authentication setup and global configuration
     - Implement auth.setup.js for test authentication state
@@ -81,6 +84,9 @@
     - Create end-to-end authentication tests
     - Test session persistence and logout functionality
     - _Requirements: 5.1, 5.5_
+
+
+
 
 - [ ] 5. Implement Unit Types page object and CRUD tests
   - [ ] 5.1 Create UnitTypesPage class extending BasePage

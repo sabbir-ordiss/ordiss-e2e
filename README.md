@@ -1,236 +1,294 @@
-# ORDISS Enterprise Automation Framework - Implementation Summary
+# ORDISS E2E Test Automation Framework
 
-## 🎉 Framework Completion Status
+Modern test automation framework built with Playwright for ORDISS application testing.
 
-✅ **COMPLETE** - Your enterprise-grade Playwright automation framework for ORDISS is now ready!
+## ✅ Features
 
-## 📋 What's Been Implemented
+- **One-time Authentication**: Login once, reuse authentication across all tests
+- **Page Object Model**: Clean, maintainable test structure  
+- **Data-Driven Testing**: CSV-based bulk test execution
+- **Environment Configuration**: Secure credential management via .env
+- **Playwright Best Practices**: Using getByRole, getByLabel, getByText locators
+- **SSL Support**: Configured for internal/self-signed certificates
 
-### 🏗️ Core Framework Architecture
-- ✅ **Page Object Model (POM)** - Scalable, maintainable page objects
-- ✅ **Base Page Class** - Common functionality for all page objects
-- ✅ **CSV-Driven Testing** - Data-driven test execution
-- ✅ **Multi-Environment Support** - Dev, Staging, Production configurations
-- ✅ **Utility Layer** - Comprehensive helper functions
-- ✅ **Configuration Management** - Centralized test configuration
+## 📁 Project Structure
 
-### 🧪 Test Implementation
-- ✅ **Enhanced Login Tests** - Comprehensive authentication testing
-- ✅ **Unit Types Module** - Complete CRUD operations with CSV data
-- ✅ **Data-Driven Tests** - CSV and JSON data integration
-- ✅ **Error Handling** - Robust error handling and logging
-- ✅ **Test Validation** - Field validation and data integrity checks
+```
+ordiss-e2e/
+├── pages/                          # Page Object Models
+│   ├── auth/
+│   │   └── login.page.js          # Login page
+│   ├── unit-type/
+│   │   ├── unit-type-list.page.js # Unit type list/grid
+│   │   └── unit-type-form.page.js # Unit type create/edit form
+│   ├── unit/                      # Unit management pages
+│   ├── organogram/                # Organogram pages
+│   ├── role-permission/           # Role & permission pages
+│   └── base.page.js               # Base page with common methods
+│
+├── tests/                         # Test specifications
+│   ├── auth.setup.js             # One-time authentication setup
+│   ├── login.spec.js             # Login tests
+│   └── unit-type.spec.js         # Unit type CRUD tests
+│
+├── test-data/                    # Test data files
+│   └── unit-types.csv           # Unit type test data
+│
+├── utils/                        # Utility functions
+│   └── csv-reader.js            # CSV file reader
+│
+├── playwright/.auth/             # Saved authentication state
+│   └── user.json                # Reusable auth session
+│
+├── .env                         # Environment variables (not in git)
+├── .env.example                 # Environment template
+└── playwright.config.js         # Playwright configuration
+```
 
-### 📊 Test Data & Configuration
-- ✅ **CSV Test Data** - Unit types and user data files
-- ✅ **JSON Configuration** - User credentials and environment settings
-- ✅ **Environment Management** - Multi-environment configuration
-- ✅ **Test Data Validation** - Data integrity and validation utilities
+## 🚀 Quick Start
 
-### 🔧 Execution & Automation
-- ✅ **Custom Test Runner** - Advanced test execution script
-- ✅ **Multiple Test Suites** - Smoke, regression, module-specific tests
-- ✅ **Parallel Execution** - Configurable parallel test runs
-- ✅ **Global Setup/Teardown** - Framework initialization and cleanup
-- ✅ **Enhanced npm Scripts** - Easy test execution commands
-
-### 📈 Reporting & Logging
-- ✅ **Comprehensive Logging** - Test execution logs with timestamps
-- ✅ **Screenshot Capture** - Automatic screenshots on failures
-- ✅ **HTML Reports** - Rich test reports with videos and traces
-- ✅ **Test Summaries** - Detailed execution summaries
-- ✅ **Performance Metrics** - Execution time tracking
-
-### 🚀 CI/CD Integration
-- ✅ **GitHub Actions** - Complete CI/CD workflow
-- ✅ **Docker Support** - Containerized test execution
-- ✅ **Multi-Browser Testing** - Chrome, Firefox, Safari support
-- ✅ **Scheduled Runs** - Automated daily test execution
-- ✅ **PR Integration** - Automatic test runs on pull requests
-
-### 📚 Documentation
-- ✅ **Comprehensive README** - Complete setup and usage guide
-- ✅ **Framework Guide** - Developer documentation
-- ✅ **Best Practices** - Code organization and testing guidelines
-- ✅ **Troubleshooting** - Common issues and solutions
-
-## 🚀 Quick Start Commands
+### 1. Install Dependencies
 
 ```bash
-# Install dependencies
 npm install
-npm run install:browsers
-
-# Run different test suites
-npm run test:smoke          # Quick smoke tests
-npm run test:regression     # Full regression suite
-npm run test:unit-types     # Unit Types module tests
-npm run test:login          # Authentication tests
-
-# Advanced execution
-npm run test:headless       # Headless execution
-npm run test:debug          # Debug mode
-npm run test:ui             # UI mode
-npm run test:parallel       # Parallel execution
-
-# View reports
-npm run test:report         # Show HTML report
-
-# Get help
-npm run help               # Show all available commands
 ```
 
-## 📁 Framework Structure
+### 2. Configure Environment
 
-```
-ordiss-automation-framework/
-├── 📄 README.md                    # Main documentation
-├── 📄 package.json                 # Dependencies and scripts
-├── 📄 playwright.config.js         # Playwright configuration
-├── 📁 pages/                       # Page Object Models
-│   ├── BasePage.js                 # Base page class
-│   ├── LoginPage.js                # Enhanced login page
-│   └── UnitTypesPage.js            # Unit types page
-├── 📁 tests/                       # Test specifications
-│   ├── 1_LoginTestRunner.spec.js   # Login tests
-│   ├── 2_UnitTypesTestRunner.spec.js # Unit types tests
-│   ├── auth.setup.js               # Authentication setup
-│   ├── global-setup.js             # Global setup
-│   └── global-teardown.js          # Global teardown
-├── 📁 test-data/                   # CSV test data
-│   ├── unit-types.csv              # Unit types data
-│   └── users.csv                   # User test data
-├── 📁 utils/                       # Utility functions
-│   ├── utils.js                    # Helper utilities
-│   └── userData.json               # User configuration
-├── 📁 config/                      # Configuration files
-│   └── test-config.js              # Test configuration
-├── 📁 scripts/                     # Execution scripts
-│   └── run-tests.js                # Advanced test runner
-├── 📁 docker/                      # Docker configuration
-│   ├── Dockerfile                  # Docker image
-│   └── docker-compose.yml          # Docker services
-├── 📁 .github/workflows/           # CI/CD workflows
-│   └── playwright-tests.yml        # GitHub Actions
-└── 📁 docs/                        # Documentation
-    └── FRAMEWORK_GUIDE.md          # Developer guide
-```
+Copy `.env.example` to `.env` and update credentials:
 
-## 🎯 Current Test Coverage
-
-### ✅ Implemented Modules
-1. **Authentication & Login**
-   - SuperAdmin login
-   - Admin user login
-   - Invalid credentials handling
-   - Empty field validation
-   - Page element verification
-
-2. **Administration → Unit Types**
-   - Create single unit type
-   - Create multiple unit types from CSV
-   - Search and verify unit types
-   - Edit existing unit types
-   - Delete unit types
-   - Field validation
-   - Performance testing
-
-### 🚧 Ready for Extension
-The framework is designed for easy extension to other ORDISS modules:
-- User Management
-- Organogram
-- Roles & Permissions
-- Procurement Management
-- Issue & Receipt
-- Traffic & Security
-- Store Management
-- Budget & Planning
-- And more...
-
-## 🔧 Key Features
-
-### 🎭 Advanced Test Execution
-- **Multiple Test Suites** - Smoke, regression, module-specific
-- **Environment Support** - Dev, staging, production
-- **Parallel Execution** - Configurable worker threads
-- **Debug Mode** - Step-through debugging
-- **UI Mode** - Interactive test execution
-
-### 📊 Data Management
-- **CSV-Driven Tests** - External test data files
-- **JSON Configuration** - Environment and user settings
-- **Data Validation** - Field validation and integrity checks
-- **Dynamic Data** - Faker.js integration for test data generation
-
-### 🔍 Debugging & Monitoring
-- **Comprehensive Logging** - Detailed execution logs
-- **Screenshot Capture** - Automatic failure screenshots
-- **Video Recording** - Test execution videos
-- **Trace Files** - Detailed debugging traces
-- **Performance Metrics** - Execution time tracking
-
-### 🚀 CI/CD Ready
-- **GitHub Actions** - Complete workflow automation
-- **Docker Support** - Containerized execution
-- **Multi-Environment** - Automated deployment testing
-- **Scheduled Runs** - Daily regression testing
-- **PR Integration** - Automatic test validation
-
-## 📈 Next Steps
-
-### 1. Immediate Actions
 ```bash
-# Test the framework
-npm install
-npm run install:browsers
-npm run test:smoke
-
-# Verify unit types functionality
-npm run test:unit-types
+copy .env.example .env
 ```
 
-### 2. Extend to New Modules
-- Follow the patterns in `docs/FRAMEWORK_GUIDE.md`
-- Create new page objects extending `BasePage`
-- Add CSV test data files
-- Create test specifications
-- Update test runner configuration
+Edit `.env`:
+```env
+BASE_URL=https://10.10.10.10:700
+SUPERADMIN_USERNAME=main.superadmin
+SUPERADMIN_PASSWORD=Ordiss@SA
+```
 
-### 3. CI/CD Setup
-- Configure GitHub Actions secrets
-- Set up environment-specific configurations
-- Configure notification integrations
-- Set up scheduled test runs
+### 3. Run Tests
 
-### 4. Team Integration
-- Share framework documentation
-- Conduct training sessions
-- Establish coding standards
-- Set up code review processes
+```bash
+# Run all tests
+npm test
 
-## 🎉 Success Metrics
+# Run specific test file
+npx playwright test tests/login.spec.js
 
-Your framework now provides:
-- ✅ **90%+ Code Reusability** through POM and utilities
-- ✅ **Scalable Architecture** for enterprise-level testing
-- ✅ **Data-Driven Testing** with CSV integration
-- ✅ **Comprehensive Reporting** with visual debugging
-- ✅ **CI/CD Integration** for automated testing
-- ✅ **Multi-Environment Support** for all deployment stages
-- ✅ **Performance Monitoring** with execution metrics
-- ✅ **Maintainable Codebase** with clear documentation
+# Run with UI (headed mode)
+npx playwright test --headed
 
-## 🤝 Support & Maintenance
+# Run specific test by name
+npx playwright test --grep "should create a new unit type"
+```
 
-The framework includes:
-- Comprehensive documentation
-- Best practices guidelines
-- Troubleshooting guides
-- Extension patterns
-- Performance optimization tips
+## 📝 Writing Tests
 
-You now have a production-ready, enterprise-grade automation framework that can scale with your ORDISS application testing needs!
+### Example Test
 
----
+```javascript
+const { test, expect } = require('@playwright/test');
+const UnitTypeListPage = require('../pages/unit-type/unit-type-list.page');
+const UnitTypeFormPage = require('../pages/unit-type/unit-type-form.page');
 
-**🚀 Your ORDISS Enterprise Automation Framework is ready for action!**
+test.describe('Unit Type Tests', () => {
+  test('should create unit type', async ({ page }) => {
+    // Authentication is already handled by auth.setup.js
+    const listPage = new UnitTypeListPage(page);
+    const formPage = new UnitTypeFormPage(page);
+
+    await listPage.navigate();
+    await listPage.clickCreate();
+    
+    await formPage.fillForm({
+      'Name (English)': 'Test Unit',
+      'Name (Bangla)': 'টেস্ট ইউনিট',
+      'Category': 'Headquarter',
+      'Service': 'Bangladesh Army',
+      'Type': 'Static'
+    });
+    
+    const success = await formPage.save();
+    expect(success).toBeTruthy();
+  });
+});
+```
+
+## 🔐 Authentication
+
+The framework uses a simple approach:
+
+1. **Login tests** (`tests/login.spec.js`) - Test login functionality independently
+2. **Other tests** - Login in `beforeEach` hook for isolation
+3. **E2E flow test** (`tests/e2e-flow.spec.js`) - Complete flow from login to feature
+
+Each test is independent and can run alone or as part of a suite.
+
+## 📊 Data-Driven Testing
+
+### CSV Test Data
+
+Place test data in `test-data/unit-types.csv`:
+
+```csv
+Name (English),Name (Bangla),Category,Service,Type
+Test Unit 1,টেস্ট ১,Headquarter,Bangladesh Army,Static
+Test Unit 2,টেস্ট ২,Service,Bangladesh Navy,Mobile
+```
+
+### Using CSV Data
+
+```javascript
+const { readCSV } = require('../utils/csv-reader');
+
+test.beforeAll(async () => {
+  testData = await readCSV('./test-data/unit-types.csv');
+});
+
+testData.forEach((unitType) => {
+  test(`create ${unitType['Name (English)']}`, async ({ page }) => {
+    // Test implementation
+  });
+});
+```
+
+## 🎯 Page Objects
+
+### Creating a Page Object
+
+```javascript
+const BasePage = require('../base.page');
+
+class MyPage extends BasePage {
+  constructor(page) {
+    super(page);
+  }
+
+  async navigate() {
+    await this.page.goto('/my-page');
+  }
+
+  async fillForm(data) {
+    await this.page.getByLabel('Name').fill(data.name);
+    await this.page.getByRole('button', { name: 'Save' }).click();
+  }
+}
+
+module.exports = MyPage;
+```
+
+### Best Practices
+
+- Use Playwright's built-in locators: `getByRole`, `getByLabel`, `getByText`
+- Avoid fragile selectors like IDs or generated classes
+- Keep page objects focused on one page/component
+- Return meaningful values from methods
+
+## 🛠️ Recording New Selectors
+
+To record interactions and get selectors:
+
+```bash
+npx playwright codegen https://10.10.10.10:700 --ignore-https-errors
+```
+
+This opens:
+1. Browser with your application
+2. Inspector showing generated code
+3. Record your actions
+4. Copy the selectors
+
+## 📋 Available Scripts
+
+```bash
+# Run all tests
+npm test
+
+# Run with UI mode
+npm run test:ui
+
+# Run in headed mode (see browser)
+npm run test:headed
+
+# Run in debug mode
+npm run test:debug
+
+# Run specific test file
+npx playwright test tests/unit-type.spec.js
+
+# Run tests matching pattern
+npx playwright test --grep "create"
+
+# Show test report
+npx playwright show-report
+```
+
+## 🔧 Configuration
+
+### Playwright Config (`playwright.config.js`)
+
+```javascript
+module.exports = {
+  testDir: './tests',
+  timeout: 60_000,
+  use: {
+    baseURL: process.env.BASE_URL,
+    ignoreHTTPSErrors: true,  // For self-signed certs
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+  },
+  projects: [
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.js/,  // Run auth setup first
+    },
+    {
+      name: 'Chromium',
+      use: { 
+        storageState: 'playwright/.auth/user.json',  // Reuse auth
+      },
+      dependencies: ['setup'],
+    },
+  ],
+};
+```
+
+## 🐛 Debugging
+
+### Debug a specific test
+
+```bash
+npx playwright test tests/unit-type.spec.js --debug
+```
+
+### View test traces
+
+```bash
+npx playwright show-trace trace.zip
+```
+
+### Screenshots and videos
+
+Failed tests automatically capture:
+- Screenshots: `reports/test-name/test-failed-1.png`
+- Videos: `reports/test-name/video.webm`
+
+## 📚 Resources
+
+- [Playwright Documentation](https://playwright.dev)
+- [Playwright Best Practices](https://playwright.dev/docs/best-practices)
+- [Page Object Model](https://playwright.dev/docs/pom)
+
+## 🤝 Contributing
+
+1. Create page objects for new pages
+2. Write tests using page objects
+3. Use meaningful test names
+4. Add test data to CSV files
+5. Follow existing patterns
+
+## 📄 License
+
+Internal use only - ORDISS Project

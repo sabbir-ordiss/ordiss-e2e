@@ -1,93 +1,54 @@
+// tests/login.spec.js
 const { test, expect } = require('@playwright/test');
-const LoginPage = require('../pages/LoginPage');
-const ExcelDataDriver = require('../utils/excelDataDriver');
+const LoginPage = require('../pages/auth/login.page');
 
-test.describe('ORDISS Login Tests', () => {
+// Override to NOT use saved auth for login tests
+test.use({ storageState: { cookies: [], origins: [] } });
+
+test.describe('Login Tests', () => {
   let loginPage;
-  let excelDriver;
 
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    excelDriver = new ExcelDataDriver();
-
-    // Navigate to ORDISS login page
-    await loginPage.navigateToLogin('https://10.10.10.10:700');
   });
 
-  test('should login successfully with SuperAdmin @smoke', async () => {
-    // Get SuperAdmin user from Excel data
-    const superAdmin = await excelDriver.getUserByUsername('main.superadmin');
+  test('should login successfully with valid credentials', async () => {
+    await loginPage.gotoLoginPage();
+    await loginPage.login(
+      process.env.SUPERADMIN_USERNAME || 'main.superadmin',
+      process.env.SUPERADMIN_PASSWORD || 'Ordiss@SA'
+    );
 
-    // Perform login
-    await loginPage.login(superAdmin.username, superAdmin.password);
-
-    // Verify successful login - should redirect to administration area
-    const currentUrl = await loginPage.getCurrentUrl();
-    expect(currentUrl).not.toContain('/login');
-    expect(currentUrl).toContain('/administration');
-
-    // Take screenshot of successful login
-    await loginPage.takeScreenshot('successful-login');
-
-    console.log('✅ SuperAdmin login successful');
+    expect(await loginPage.isLoggedIn()).toBeTruthy();
   });
 
-  test('should validate login form elements @smoke', async () => {
-    // Validate all required form elements are present
-    const validation = await loginPage.validateLoginForm();
+  test('should show error with invalid credentials', async ({ page }) => {
+    await loginPage.gotoLoginPage();
 
-    expect(validation.isValid).toBe(true);
-    expect(validation.elements.usernameInput).toBe(true);
-    expect(validation.elements.passwordInput).toBe(true);
-    expect(validation.elements.loginButton).toBe(true);
+    // Fill credentials manually without waiting for navigation
+    await page
+      .getByRole('textbox', { name: 'Enter user ID' })
+      .fill('wronguser');
+    await page
+      .getByRole('textbox', { name: 'Enter password' })
+      .fill('wrongpass');
+    await page.getByRole('button', { name: 'Log in' }).click();
 
-    console.log('✅ Login form validation passed');
+    await page.waitForTimeout(2000);
+    expect(await loginPage.isLoggedIn()).toBeFalsy();
   });
 
-  test('should handle invalid credentials @regression', async () => {
-    // Test with invalid credentials
-    await loginPage.login('invalid.user', 'wrongpassword', {
-      waitForRedirect: false,
-    });
-
-    // Wait for any error messages
-    await loginPage.page.waitForTimeout(2000);
-
-    // Verify we're still on login page
-    const currentUrl = await loginPage.getCurrentUrl();
-    expect(currentUrl).toContain('/login');
-
-    console.log('✅ Invalid credentials handled correctly');
+  test('should validate login form elements', async () => {
+    await loginPage.gotoLoginPage();
+    expect(await loginPage.validateLoginForm()).toBeTruthy();
   });
 
-  test('should test with Excel data @regression', async () => {
-    // Get test scenarios from Excel
-    const testScenarios = await excelDriver.getTestScenarios('login');
+  test('should handle empty credentials', async ({ page }) => {
+    await loginPage.gotoLoginPage();
 
-    for (const scenario of testScenarios) {
-      await test.step(scenario.testCase, async () => {
-        // Clear any existing session
-        await loginPage.page.context().clearCookies();
-        await loginPage.navigateToLogin('https://10.10.10.10:700');
+    await page.getByRole('button', { name: 'Log in' }).click();
+    await page.waitForTimeout(1000);
 
-        // Perform login based on scenario
-        await loginPage.login(scenario.username, scenario.password, {
-          waitForRedirect: scenario.expectedResult === 'success',
-        });
-
-        // Verify result
-        const currentUrl = await loginPage.getCurrentUrl();
-
-        if (scenario.expectedResult === 'success') {
-          expect(currentUrl).toContain(scenario.expectedUrl);
-        } else {
-          expect(currentUrl).toContain('/login');
-        }
-
-        console.log(
-          `✅ ${scenario.testCase} - Result: ${scenario.expectedResult}`
-        );
-      });
-    }
+    expect(await loginPage.isLoggedIn()).toBeFalsy();
   });
 });
